@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="config">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="widget_list" type="WidgetListType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="WidgetListType">
+        <xs:sequence>
+            <xs:element name="widget" type="WidgetType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="WidgetType">
+        <xs:sequence>
+            <xs:element name="widget_class" type="xs:string"/>
+            <xs:element name="templates_list" type="TemplateListType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TemplateListType">
+        <xs:sequence>
+            <xs:element name="template" type="TemplateType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TemplateType">
+        <xs:sequence>
+            <xs:element name="new_template_label" type="xs:string"/>
+            <xs:element name="new_template_path" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

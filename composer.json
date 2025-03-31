@@ -1,0 +1,20 @@
+{
+    "name": "aweb/widget-extender",
+    "description": "Widget extender",
+    "type": "magento2-module",
+    "authors": [
+        {
+            "name": "Adrian Wyganowski"
+        }
+    ],
+    "license": "MIT",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Aweb\\WidgetExtender\\": ""
+        }
+    },
+    "version": "0.0.1"
+}

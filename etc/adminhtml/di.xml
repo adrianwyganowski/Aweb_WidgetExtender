@@ -1,0 +1,12 @@
+<config>
+    <type name="Magento\Widget\Model\Widget">
+        <plugin name="aweb_add_templates_to_widget"
+                type="Aweb\WidgetExtender\Plugin\Model\AddTemplatesPlugin"
+        />
+    </type>
+    <type name="Magento\Widget\Model\Widget\Instance">
+        <plugin name="aweb_add_templates_to_widget_instance"
+            type="Aweb\WidgetExtender\Plugin\Model\Instance\AddTemplatesPlugin"
+        />
+    </type>
+</config>
