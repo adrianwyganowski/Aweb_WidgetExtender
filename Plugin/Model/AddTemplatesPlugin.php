@@ -20,12 +20,16 @@ class AddTemplatesPlugin
     public function afterGetConfigAsObject(Widget $subject, DataObject $result)
     {
         $parameters = $result->getParameters();
-        $templates = $parameters['template']->getValues();
+        $templates = isset($parameters['template']) ? $parameters['template']->getValues() : null;
+
+        if ($templates == null) {
+            return $result;
+        }
 
         $widgetList = $this->widgetList->get('widgets');
 
         if ($widgetList == null) {
-            return $subject;
+            return $result;
         }
 
         foreach ($widgetList as $widget) {
