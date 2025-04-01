@@ -24,6 +24,10 @@ class AddTemplatesPlugin
 
         $widgetList = $this->widgetList->get('widgets');
 
+        if ($widgetList == null) {
+            return $subject;
+        }
+
         foreach ($widgetList as $widget) {
             if ($widget['widget_class'] == $result->getType()) {
                 foreach ($widget['templates'] as $template) {
