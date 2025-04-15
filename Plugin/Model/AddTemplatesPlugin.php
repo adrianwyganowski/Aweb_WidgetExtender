@@ -5,27 +5,26 @@ namespace Aweb\WidgetExtender\Plugin\Model;
 use Magento\Framework\DataObject;
 use Magento\Widget\Model\Widget;
 use Aweb\WidgetExtender\Model\Config\Data as WidgetExtenderConfig;
+use Aweb\WidgetExtender\Helper\DefaultTemplate as DefaultTemplateHelper;
 
 class AddTemplatesPlugin
 {
     private WidgetExtenderConfig $widgetList;
+    private DefaultTemplateHelper $defaultTemplateHelper;
 
     public function __construct(
         WidgetExtenderConfig $widgetList,
+        DefaultTemplateHelper $defaultTemplateHelper
     )
     {
         $this->widgetList = $widgetList;
+        $this->defaultTemplateHelper = $defaultTemplateHelper;
     }
 
     public function afterGetConfigAsObject(Widget $subject, DataObject $result)
     {
         $parameters = $result->getParameters();
-        $templates = isset($parameters['template']) ? $parameters['template']->getValues() : null;
-
-        if ($templates == null) {
-            return $result;
-        }
-
+        $templates = isset($parameters['template']) ? $parameters['template']->getValues() : [];
         $widgetList = $this->widgetList->get('widgets');
 
         if ($widgetList == null) {
@@ -44,6 +43,22 @@ class AddTemplatesPlugin
                     );
                 }
             }
+        }
+
+        if ($templates == []) {
+            return $result;
+        }
+
+        if (!isset($parameters['template'])) {
+            $parameters['template'] = $this->defaultTemplateHelper->defaultTemplate();
+
+            array_push(
+                $templates,
+                [
+                    'value' => '',
+                    'label' => 'Default Template'
+                ]
+            );
         }
 
         $parameters['template']->setData('values', $templates);
