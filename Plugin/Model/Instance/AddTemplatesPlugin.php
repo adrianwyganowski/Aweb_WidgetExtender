@@ -2,8 +2,7 @@
 
 namespace Aweb\WidgetExtender\Plugin\Model\Instance;
 
-use Magento\Framework\DataObject;
-use Magento\Widget\Model\Widget;
+use Magento\Widget\Model\Widget\Instance as Widget;
 use Aweb\WidgetExtender\Model\Config\Data as WidgetExtenderConfig;
 use Aweb\WidgetExtender\Helper\DefaultTemplate as DefaultTemplateHelper;
 
@@ -21,16 +20,12 @@ class AddTemplatesPlugin
         $this->defaultTemplateHelper = $defaultTemplateHelper;
     }
 
-    public function afterGetWidgetConfigAsArray(Widget $subject, DataObject $result)
+    public function afterGetWidgetConfigAsArray(Widget $subject, array $result)
     {
         $parameters = $result['parameters'];
         $templates = [];
 
-        $templates = isset($parameters['template']) ? $parameters['template']->getValues() : [];
-
-        if ($templates === []) {
-            return $result;
-        }
+        $templates = isset($parameters['template']) ? $parameters['template']['values'] : [];
 
         $instanceType = $subject->getInstanceType();
 
@@ -52,6 +47,10 @@ class AddTemplatesPlugin
                     );
                 }
             }
+        }
+
+        if ($templates == []) {
+            return $result;
         }
 
         if (!isset($parameters['template'])) {
