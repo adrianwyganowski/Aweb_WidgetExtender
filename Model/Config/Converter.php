@@ -11,34 +11,42 @@ class Converter implements ConverterInterface
         $widgets = $source->getElementsByTagName('widget');
 
         if (!$widgets->length) {
-            $source;
+            return $source;
         }
+        $widgetCollection = [];
 
-        $widgetInfoArray = [];
-        $iterator = 0;
-        foreach ($widgets as $widget) {
+        foreach ($widgets as $widgetIndex => $widget) {
             foreach ($widget->childNodes as $widgetInfo) {
-                if ($widgetInfo->nodeName == 'templates_list') {
-                    $j = 0;
-                    foreach ($widgetInfo->childNodes as $template) {
-                        if ($template->nodeName != "#text") {
-                            foreach ($template->childNodes as $templateInfo) {
-                                if ($templateInfo->nodeName != "#text") {
-                                    $widgetInfoArray[$iterator]['templates'][$j][$templateInfo->nodeName] = $templateInfo->nodeValue;
-                                }
-                            }
-                            $j++;
-                        }
-                    }
+                if ($widgetInfo->nodeName === "#text") {
+                    continue;
+                }
+                if ($widgetInfo->nodeName === 'templates_list') {
+                    $widgetCollection[$widgetIndex]['templates'] = $this->extractTemplates($widgetInfo);
                 } else {
-                    if ($widgetInfo->nodeName != "#text") {
-                        $widgetInfoArray[$iterator][$widgetInfo->nodeName] = $widgetInfo->nodeValue;
-                    }
+                    $widgetCollection[$widgetIndex][$widgetInfo->nodeName] = $widgetInfo->nodeValue;
                 }
             }
-            $iterator++;
         }
 
-        return ['widgets' => $widgetInfoArray];
+        return ['widgets' => $widgetCollection];
+    }
+
+    private function extractTemplates($templatesNode)
+    {
+        $templates = [];
+        $templateIndex = 0;
+        foreach ($templatesNode->childNodes as $template) {
+            if ($template->nodeName === "#text") {
+                continue;
+            }
+            foreach ($template->childNodes as $templateInfo) {
+                if ($templateInfo->nodeName === "#text") {
+                    continue;
+                }
+                $templates[$templateIndex][$templateInfo->nodeName] = $templateInfo->nodeValue;
+            }
+            $templateIndex++;
+        }
+        return $templates;
     }
 }
