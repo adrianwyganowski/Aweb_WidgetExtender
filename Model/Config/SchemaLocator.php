@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Aweb\WidgetExtender\Model\Config;
 
@@ -25,7 +26,6 @@ class SchemaLocator implements SchemaLocatorInterface
     {
         return $this->schema;
     }
-
 
     public function getPerFileSchema()
     {
